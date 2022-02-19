@@ -1,9 +1,11 @@
 import { config, createSchema } from "@keystone-next/keystone/schema";
 import { createAuth } from "@keystone-next/auth";
-import { withItemData, statelessSessions } from "@keystone-next/keystone/session"
-import { User } from "./schemas/User";
-
+import { withItemData, statelessSessions } from "@keystone-next/keystone/session";
 import 'dotenv/config';
+
+import { User } from "./schemas/User";
+import { Product } from "./schemas/Product";
+import { ProductImage } from "./schemas/ProductImage";
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/eCamellDB';
 
@@ -34,7 +36,9 @@ export default withAuth(config({
     url: databaseURL
   },
   lists: createSchema({
-    User
+    User,
+    Product,
+    ProductImage
   }),
   ui: {
     // Show the UI to users that has access
