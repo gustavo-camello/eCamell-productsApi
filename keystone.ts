@@ -1,4 +1,7 @@
-import {config, createSchema} from "@keystone-next/keystone/schema"
+import { config, createSchema } from "@keystone-next/keystone/schema";
+import { createAuth } from "@keystone-next/auth";
+import { withItemData, statelessSessions } from "@keystone-next/keystone/session"
+import { User } from "./schemas/User";
 
 import 'dotenv/config';
 
@@ -9,7 +12,17 @@ const sessionConfig = {
   secret: process.env.SESSION_SECRET
 }
 
-export default config({
+const { withAuth } = createAuth({
+  listKey: 'User',
+  identityField: 'email',
+  secretField: 'password',
+  initFirstItem: {
+    fields: ["name", "email", "password"],
+    // TODO: Add initial roles
+  }
+})
+
+export default withAuth(config({
   server: {
     cors: {
       origin: [process.env.FRONTEND_URL],
@@ -21,9 +34,16 @@ export default config({
     url: databaseURL
   },
   lists: createSchema({
-
+    User
   }),
   ui: {
-    isAccessAllowed: () => true
-  }
-})
+    // Show the UI to users that has access
+    isAccessAllowed: ({ session }) => {
+      console.log(session)
+      return session?.data
+;    }
+  },
+  session: withItemData(statelessSessions(sessionConfig), {
+    User: "id name email"
+  })
+}))
