@@ -40,6 +40,7 @@ export default withAuth(config({
     Product,
     ProductImage
   }),
+  
   ui: {
     // Show the UI to users that has access
     isAccessAllowed: ({ session }) => {
@@ -47,6 +48,7 @@ export default withAuth(config({
       return session?.data
 ;    }
   },
+  
   session: withItemData(statelessSessions(sessionConfig), {
     User: "id name email"
   })
