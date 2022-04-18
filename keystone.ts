@@ -44,7 +44,7 @@ export default withAuth(config({
   ui: {
     // Show the UI to users that has access
     isAccessAllowed: ({ session }) => {
-      console.log(session)
+      console.log({session})
       return session?.data
 ;    }
   },
