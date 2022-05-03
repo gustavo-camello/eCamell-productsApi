@@ -6,6 +6,10 @@ import 'dotenv/config';
 import { User } from "./schemas/User";
 import { Product } from "./schemas/Product";
 import { ProductImage } from "./schemas/ProductImage";
+import { Review } from "./schemas/Review";
+import { ProductCategory } from "./schemas/ProductCategory";
+import { WishList } from "./schemas/WishList";
+import { WishListItem } from "./schemas/WishListItem";
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/eCamellDB';
 
@@ -20,7 +24,6 @@ const { withAuth } = createAuth({
   secretField: 'password',
   initFirstItem: {
     fields: ["name", "email", "password"],
-    // TODO: Add initial roles
   }
 })
 
@@ -38,7 +41,11 @@ export default withAuth(config({
   lists: createSchema({
     User,
     Product,
-    ProductImage
+    ProductImage,
+    Review,
+    ProductCategory,
+    WishList,
+    WishListItem
   }),
   
   ui: {

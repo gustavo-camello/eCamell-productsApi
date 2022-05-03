@@ -2,8 +2,6 @@ import { list } from "@keystone-next/keystone/schema";
 import {text, relationship, select, integer} from "@keystone-next/fields";
 
 export const Product = list({
-  // access
-  // ui
   fields: {
     name: text({isRequired: true}),
     description: text({
@@ -11,6 +9,7 @@ export const Product = list({
         displayMode: "textarea"
       },
     }),
+    reviews: relationship({ref: 'Review.product', many: true}),
     status: select({
       options: [
         { label: 'Draft', value: "DRAFT"},
@@ -22,6 +21,7 @@ export const Product = list({
         // createView: { fieldMode: 'hidden' },
       },
     }),
+    category: relationship({ref: "ProductCategory.products", many: true}),
     price: integer(),
     photo: relationship({
       ref: "ProductImage.product",

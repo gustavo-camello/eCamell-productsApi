@@ -146,6 +146,20 @@ input UsersCreateInput {
   data: UserCreateInput
 }
 
+input ReviewRelateToManyInput {
+  create: [ReviewCreateInput]
+  connect: [ReviewWhereUniqueInput]
+  disconnect: [ReviewWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input ProductCategoryRelateToManyInput {
+  create: [ProductCategoryCreateInput]
+  connect: [ProductCategoryWhereUniqueInput]
+  disconnect: [ProductCategoryWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
 input ProductImageRelateToOneInput {
   create: ProductImageCreateInput
   connect: ProductImageWhereUniqueInput
@@ -158,7 +172,11 @@ type Product {
   id: ID!
   name: String
   description: String
+  reviews(where: ReviewWhereInput, search: String, sortBy: [SortReviewsBy!], orderBy: String, first: Int, skip: Int): [Review!]!
+  _reviewsMeta(where: ReviewWhereInput, search: String, sortBy: [SortReviewsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
   status: String
+  category(where: ProductCategoryWhereInput, search: String, sortBy: [SortProductCategoriesBy!], orderBy: String, first: Int, skip: Int): [ProductCategory!]!
+  _categoryMeta(where: ProductCategoryWhereInput, search: String, sortBy: [SortProductCategoriesBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
   price: Int
   photo: ProductImage
 }
@@ -206,6 +224,15 @@ input ProductWhereInput {
   description_not_ends_with_i: String
   description_in: [String]
   description_not_in: [String]
+
+  """ condition must be true for all nodes """
+  reviews_every: ReviewWhereInput
+
+  """ condition must be true for at least 1 node """
+  reviews_some: ReviewWhereInput
+
+  """ condition must be false for all nodes """
+  reviews_none: ReviewWhereInput
   status: String
   status_not: String
   status_contains: String
@@ -224,6 +251,15 @@ input ProductWhereInput {
   status_not_ends_with_i: String
   status_in: [String]
   status_not_in: [String]
+
+  """ condition must be true for all nodes """
+  category_every: ProductCategoryWhereInput
+
+  """ condition must be true for at least 1 node """
+  category_some: ProductCategoryWhereInput
+
+  """ condition must be false for all nodes """
+  category_none: ProductCategoryWhereInput
   price: Int
   price_not: Int
   price_lt: Int
@@ -247,8 +283,12 @@ enum SortProductsBy {
   name_DESC
   description_ASC
   description_DESC
+  reviews_ASC
+  reviews_DESC
   status_ASC
   status_DESC
+  category_ASC
+  category_DESC
   price_ASC
   price_DESC
   photo_ASC
@@ -258,7 +298,9 @@ enum SortProductsBy {
 input ProductUpdateInput {
   name: String
   description: String
+  reviews: ReviewRelateToManyInput
   status: String
+  category: ProductCategoryRelateToManyInput
   price: Int
   photo: ProductImageRelateToOneInput
 }
@@ -271,7 +313,9 @@ input ProductsUpdateInput {
 input ProductCreateInput {
   name: String
   description: String
+  reviews: ReviewRelateToManyInput
   status: String
+  category: ProductCategoryRelateToManyInput
   price: Int
   photo: ProductImageRelateToOneInput
 }
@@ -409,6 +453,374 @@ input ProductImageCreateInput {
 
 input ProductImagesCreateInput {
   data: ProductImageCreateInput
+}
+
+""" A keystone list """
+type Review {
+  id: ID!
+  review: String
+  customerId: String
+  rating: Int
+  product: Product
+}
+
+input ReviewWhereInput {
+  AND: [ReviewWhereInput]
+  OR: [ReviewWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  review: String
+  review_not: String
+  review_contains: String
+  review_not_contains: String
+  review_starts_with: String
+  review_not_starts_with: String
+  review_ends_with: String
+  review_not_ends_with: String
+  review_i: String
+  review_not_i: String
+  review_contains_i: String
+  review_not_contains_i: String
+  review_starts_with_i: String
+  review_not_starts_with_i: String
+  review_ends_with_i: String
+  review_not_ends_with_i: String
+  review_in: [String]
+  review_not_in: [String]
+  customerId: String
+  customerId_not: String
+  customerId_contains: String
+  customerId_not_contains: String
+  customerId_starts_with: String
+  customerId_not_starts_with: String
+  customerId_ends_with: String
+  customerId_not_ends_with: String
+  customerId_i: String
+  customerId_not_i: String
+  customerId_contains_i: String
+  customerId_not_contains_i: String
+  customerId_starts_with_i: String
+  customerId_not_starts_with_i: String
+  customerId_ends_with_i: String
+  customerId_not_ends_with_i: String
+  customerId_in: [String]
+  customerId_not_in: [String]
+  rating: Int
+  rating_not: Int
+  rating_lt: Int
+  rating_lte: Int
+  rating_gt: Int
+  rating_gte: Int
+  rating_in: [Int]
+  rating_not_in: [Int]
+  product: ProductWhereInput
+  product_is_null: Boolean
+}
+
+input ReviewWhereUniqueInput {
+  id: ID!
+}
+
+enum SortReviewsBy {
+  id_ASC
+  id_DESC
+  review_ASC
+  review_DESC
+  customerId_ASC
+  customerId_DESC
+  rating_ASC
+  rating_DESC
+  product_ASC
+  product_DESC
+}
+
+input ReviewUpdateInput {
+  review: String
+  customerId: String
+  rating: Int
+  product: ProductRelateToOneInput
+}
+
+input ReviewsUpdateInput {
+  id: ID!
+  data: ReviewUpdateInput
+}
+
+input ReviewCreateInput {
+  review: String
+  customerId: String
+  rating: Int
+  product: ProductRelateToOneInput
+}
+
+input ReviewsCreateInput {
+  data: ReviewCreateInput
+}
+
+input ProductRelateToManyInput {
+  create: [ProductCreateInput]
+  connect: [ProductWhereUniqueInput]
+  disconnect: [ProductWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type ProductCategory {
+  id: ID!
+  name: String
+  products(where: ProductWhereInput, search: String, sortBy: [SortProductsBy!], orderBy: String, first: Int, skip: Int): [Product!]!
+  _productsMeta(where: ProductWhereInput, search: String, sortBy: [SortProductsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+}
+
+input ProductCategoryWhereInput {
+  AND: [ProductCategoryWhereInput]
+  OR: [ProductCategoryWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  name: String
+  name_not: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  name_i: String
+  name_not_i: String
+  name_contains_i: String
+  name_not_contains_i: String
+  name_starts_with_i: String
+  name_not_starts_with_i: String
+  name_ends_with_i: String
+  name_not_ends_with_i: String
+  name_in: [String]
+  name_not_in: [String]
+
+  """ condition must be true for all nodes """
+  products_every: ProductWhereInput
+
+  """ condition must be true for at least 1 node """
+  products_some: ProductWhereInput
+
+  """ condition must be false for all nodes """
+  products_none: ProductWhereInput
+}
+
+input ProductCategoryWhereUniqueInput {
+  id: ID!
+}
+
+enum SortProductCategoriesBy {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  products_ASC
+  products_DESC
+}
+
+input ProductCategoryUpdateInput {
+  name: String
+  products: ProductRelateToManyInput
+}
+
+input ProductCategoriesUpdateInput {
+  id: ID!
+  data: ProductCategoryUpdateInput
+}
+
+input ProductCategoryCreateInput {
+  name: String
+  products: ProductRelateToManyInput
+}
+
+input ProductCategoriesCreateInput {
+  data: ProductCategoryCreateInput
+}
+
+input WishListItemRelateToManyInput {
+  create: [WishListItemCreateInput]
+  connect: [WishListItemWhereUniqueInput]
+  disconnect: [WishListItemWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type WishList {
+  id: ID!
+  customerId: String
+  wishListItems(where: WishListItemWhereInput, search: String, sortBy: [SortWishListItemsBy!], orderBy: String, first: Int, skip: Int): [WishListItem!]!
+  _wishListItemsMeta(where: WishListItemWhereInput, search: String, sortBy: [SortWishListItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+}
+
+input WishListWhereInput {
+  AND: [WishListWhereInput]
+  OR: [WishListWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  customerId: String
+  customerId_not: String
+  customerId_contains: String
+  customerId_not_contains: String
+  customerId_starts_with: String
+  customerId_not_starts_with: String
+  customerId_ends_with: String
+  customerId_not_ends_with: String
+  customerId_i: String
+  customerId_not_i: String
+  customerId_contains_i: String
+  customerId_not_contains_i: String
+  customerId_starts_with_i: String
+  customerId_not_starts_with_i: String
+  customerId_ends_with_i: String
+  customerId_not_ends_with_i: String
+  customerId_in: [String]
+  customerId_not_in: [String]
+
+  """ condition must be true for all nodes """
+  wishListItems_every: WishListItemWhereInput
+
+  """ condition must be true for at least 1 node """
+  wishListItems_some: WishListItemWhereInput
+
+  """ condition must be false for all nodes """
+  wishListItems_none: WishListItemWhereInput
+}
+
+input WishListWhereUniqueInput {
+  id: ID!
+}
+
+enum SortWishListsBy {
+  id_ASC
+  id_DESC
+  customerId_ASC
+  customerId_DESC
+  wishListItems_ASC
+  wishListItems_DESC
+}
+
+input WishListUpdateInput {
+  customerId: String
+  wishListItems: WishListItemRelateToManyInput
+}
+
+input WishListsUpdateInput {
+  id: ID!
+  data: WishListUpdateInput
+}
+
+input WishListCreateInput {
+  customerId: String
+  wishListItems: WishListItemRelateToManyInput
+}
+
+input WishListsCreateInput {
+  data: WishListCreateInput
+}
+
+input WishListRelateToOneInput {
+  create: WishListCreateInput
+  connect: WishListWhereUniqueInput
+  disconnect: WishListWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type WishListItem {
+  id: ID!
+  productId: String
+  wishList: WishList
+  wishListId: String
+}
+
+input WishListItemWhereInput {
+  AND: [WishListItemWhereInput]
+  OR: [WishListItemWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  productId: String
+  productId_not: String
+  productId_contains: String
+  productId_not_contains: String
+  productId_starts_with: String
+  productId_not_starts_with: String
+  productId_ends_with: String
+  productId_not_ends_with: String
+  productId_i: String
+  productId_not_i: String
+  productId_contains_i: String
+  productId_not_contains_i: String
+  productId_starts_with_i: String
+  productId_not_starts_with_i: String
+  productId_ends_with_i: String
+  productId_not_ends_with_i: String
+  productId_in: [String]
+  productId_not_in: [String]
+  wishList: WishListWhereInput
+  wishList_is_null: Boolean
+  wishListId: String
+  wishListId_not: String
+  wishListId_contains: String
+  wishListId_not_contains: String
+  wishListId_starts_with: String
+  wishListId_not_starts_with: String
+  wishListId_ends_with: String
+  wishListId_not_ends_with: String
+  wishListId_i: String
+  wishListId_not_i: String
+  wishListId_contains_i: String
+  wishListId_not_contains_i: String
+  wishListId_starts_with_i: String
+  wishListId_not_starts_with_i: String
+  wishListId_ends_with_i: String
+  wishListId_not_ends_with_i: String
+  wishListId_in: [String]
+  wishListId_not_in: [String]
+}
+
+input WishListItemWhereUniqueInput {
+  id: ID!
+}
+
+enum SortWishListItemsBy {
+  id_ASC
+  id_DESC
+  productId_ASC
+  productId_DESC
+  wishList_ASC
+  wishList_DESC
+  wishListId_ASC
+  wishListId_DESC
+}
+
+input WishListItemUpdateInput {
+  productId: String
+  wishList: WishListRelateToOneInput
+  wishListId: String
+}
+
+input WishListItemsUpdateInput {
+  id: ID!
+  data: WishListItemUpdateInput
+}
+
+input WishListItemCreateInput {
+  productId: String
+  wishList: WishListRelateToOneInput
+  wishListId: String
+}
+
+input WishListItemsCreateInput {
+  data: WishListItemCreateInput
 }
 
 """
@@ -630,6 +1042,58 @@ type Query {
   """ Retrieve the meta-data for the ProductImage list. """
   _ProductImagesMeta: _ListMeta
 
+  """ Search for all Review items which match the where clause. """
+  allReviews(where: ReviewWhereInput, search: String, sortBy: [SortReviewsBy!], orderBy: String, first: Int, skip: Int): [Review]
+
+  """ Search for the Review item with the matching ID. """
+  Review(where: ReviewWhereUniqueInput!): Review
+
+  """ Perform a meta-query on all Review items which match the where clause. 
+  """
+  _allReviewsMeta(where: ReviewWhereInput, search: String, sortBy: [SortReviewsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the Review list. """
+  _ReviewsMeta: _ListMeta
+
+  """ Search for all ProductCategory items which match the where clause. """
+  allProductCategories(where: ProductCategoryWhereInput, search: String, sortBy: [SortProductCategoriesBy!], orderBy: String, first: Int, skip: Int): [ProductCategory]
+
+  """ Search for the ProductCategory item with the matching ID. """
+  ProductCategory(where: ProductCategoryWhereUniqueInput!): ProductCategory
+
+  """ Perform a meta-query on all ProductCategory items which match the where clause. 
+  """
+  _allProductCategoriesMeta(where: ProductCategoryWhereInput, search: String, sortBy: [SortProductCategoriesBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the ProductCategory list. """
+  _ProductCategoriesMeta: _ListMeta
+
+  """ Search for all WishList items which match the where clause. """
+  allWishLists(where: WishListWhereInput, search: String, sortBy: [SortWishListsBy!], orderBy: String, first: Int, skip: Int): [WishList]
+
+  """ Search for the WishList item with the matching ID. """
+  WishList(where: WishListWhereUniqueInput!): WishList
+
+  """ Perform a meta-query on all WishList items which match the where clause. 
+  """
+  _allWishListsMeta(where: WishListWhereInput, search: String, sortBy: [SortWishListsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the WishList list. """
+  _WishListsMeta: _ListMeta
+
+  """ Search for all WishListItem items which match the where clause. """
+  allWishListItems(where: WishListItemWhereInput, search: String, sortBy: [SortWishListItemsBy!], orderBy: String, first: Int, skip: Int): [WishListItem]
+
+  """ Search for the WishListItem item with the matching ID. """
+  WishListItem(where: WishListItemWhereUniqueInput!): WishListItem
+
+  """ Perform a meta-query on all WishListItem items which match the where clause. 
+  """
+  _allWishListItemsMeta(where: WishListItemWhereInput, search: String, sortBy: [SortWishListItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the WishListItem list. """
+  _WishListItemsMeta: _ListMeta
+
   """ Retrieve the meta-data for all lists. """
   _ksListsMeta(where: _ksListsMetaInput): [_ListMeta]
 
@@ -693,6 +1157,78 @@ type Mutation {
 
   """ Delete multiple ProductImage items by ID. """
   deleteProductImages(ids: [ID!]): [ProductImage]
+
+  """ Create a single Review item. """
+  createReview(data: ReviewCreateInput): Review
+
+  """ Create multiple Review items. """
+  createReviews(data: [ReviewsCreateInput]): [Review]
+
+  """ Update a single Review item by ID. """
+  updateReview(id: ID!, data: ReviewUpdateInput): Review
+
+  """ Update multiple Review items by ID. """
+  updateReviews(data: [ReviewsUpdateInput]): [Review]
+
+  """ Delete a single Review item by ID. """
+  deleteReview(id: ID!): Review
+
+  """ Delete multiple Review items by ID. """
+  deleteReviews(ids: [ID!]): [Review]
+
+  """ Create a single ProductCategory item. """
+  createProductCategory(data: ProductCategoryCreateInput): ProductCategory
+
+  """ Create multiple ProductCategory items. """
+  createProductCategories(data: [ProductCategoriesCreateInput]): [ProductCategory]
+
+  """ Update a single ProductCategory item by ID. """
+  updateProductCategory(id: ID!, data: ProductCategoryUpdateInput): ProductCategory
+
+  """ Update multiple ProductCategory items by ID. """
+  updateProductCategories(data: [ProductCategoriesUpdateInput]): [ProductCategory]
+
+  """ Delete a single ProductCategory item by ID. """
+  deleteProductCategory(id: ID!): ProductCategory
+
+  """ Delete multiple ProductCategory items by ID. """
+  deleteProductCategories(ids: [ID!]): [ProductCategory]
+
+  """ Create a single WishList item. """
+  createWishList(data: WishListCreateInput): WishList
+
+  """ Create multiple WishList items. """
+  createWishLists(data: [WishListsCreateInput]): [WishList]
+
+  """ Update a single WishList item by ID. """
+  updateWishList(id: ID!, data: WishListUpdateInput): WishList
+
+  """ Update multiple WishList items by ID. """
+  updateWishLists(data: [WishListsUpdateInput]): [WishList]
+
+  """ Delete a single WishList item by ID. """
+  deleteWishList(id: ID!): WishList
+
+  """ Delete multiple WishList items by ID. """
+  deleteWishLists(ids: [ID!]): [WishList]
+
+  """ Create a single WishListItem item. """
+  createWishListItem(data: WishListItemCreateInput): WishListItem
+
+  """ Create multiple WishListItem items. """
+  createWishListItems(data: [WishListItemsCreateInput]): [WishListItem]
+
+  """ Update a single WishListItem item by ID. """
+  updateWishListItem(id: ID!, data: WishListItemUpdateInput): WishListItem
+
+  """ Update multiple WishListItem items by ID. """
+  updateWishListItems(data: [WishListItemsUpdateInput]): [WishListItem]
+
+  """ Delete a single WishListItem item by ID. """
+  deleteWishListItem(id: ID!): WishListItem
+
+  """ Delete multiple WishListItem items by ID. """
+  deleteWishListItems(ids: [ID!]): [WishListItem]
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult!
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   endSession: Boolean!

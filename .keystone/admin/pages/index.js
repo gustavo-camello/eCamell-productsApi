@@ -30,6 +30,18 @@ export default function Home() {
           ProductImage: _allProductImagesMeta {
             count
           }
+          Review: _allReviewsMeta {
+            count
+          }
+          ProductCategory: _allProductCategoriesMeta {
+            count
+          }
+          WishList: _allWishListsMeta {
+            count
+          }
+          WishListItem: _allWishListItemsMeta {
+            count
+          }
         }
       `}
     />
