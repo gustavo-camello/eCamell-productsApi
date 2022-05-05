@@ -1,5 +1,5 @@
 import { list } from "@keystone-next/keystone/schema";
-import {text, relationship, select, integer} from "@keystone-next/fields";
+import {text, relationship, select, integer, checkbox} from "@keystone-next/fields";
 
 export const Product = list({
   fields: {
@@ -10,16 +10,8 @@ export const Product = list({
       },
     }),
     reviews: relationship({ref: 'Review.product', many: true}),
-    status: select({
-      options: [
-        { label: 'Draft', value: "DRAFT"},
-        { label: 'Available', value: "AVAILABLE"},
-        { label: 'Unavailable', value: "UNAVAILABLE"},
-      ],
-      ui: {
-        displayMode: 'segmented-control',
-        // createView: { fieldMode: 'hidden' },
-      },
+    featured: checkbox({
+      defaultValue: false,
     }),
     category: relationship({ref: "ProductCategory.products", many: true}),
     price: integer(),
@@ -34,7 +26,7 @@ export const Product = list({
   },
   ui: {
     listView: {
-      initialColumns: ["name", "photo", "status", "price"]
+      initialColumns: ["name", "category", "photo", "price"]
     },
   },
 })

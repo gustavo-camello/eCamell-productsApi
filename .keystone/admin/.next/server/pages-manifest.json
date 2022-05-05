@@ -2,11 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/signin": "pages/signin.js",
-  "/next/dist/pages/_error": "pages/next/dist/pages/_error.js",
   "/": "pages/index.js",
-  "/product-categories/[id]": "pages/product-categories/[id].js",
-  "/wish-list-items": "pages/wish-list-items.js",
-  "/products": "pages/products.js",
-  "/products/[id]": "pages/products/[id].js"
+  "/storefronts": "pages/storefronts.js"
 }

@@ -8,7 +8,7 @@ export const ProductCategory = list({
   },
   ui: {
     listView: {
-      initialColumns: ["name"]
+      initialColumns: ["name", "products"]
     },
   },
 })

@@ -10,6 +10,12 @@ import { Review } from "./schemas/Review";
 import { ProductCategory } from "./schemas/ProductCategory";
 import { WishList } from "./schemas/WishList";
 import { WishListItem } from "./schemas/WishListItem";
+import { Cart } from "./schemas/Cart";
+import { CartItem } from "./schemas/CartItem";
+import { OrderItem } from "./schemas/OrderItem";
+import { Order } from "./schemas/Order";
+import { Customer } from "./schemas/Customer";
+import { Storefront } from "./schemas/Storefront";
 
 const databaseURL = process.env.DATABASE_URL || 'mongodb://localhost/eCamellDB';
 
@@ -45,7 +51,14 @@ export default withAuth(config({
     Review,
     ProductCategory,
     WishList,
-    WishListItem
+    WishListItem,
+    Cart,
+    CartItem,
+    OrderItem,
+    Order,
+    Customer,
+    Storefront,
+
   }),
   
   ui: {

@@ -8,4 +8,9 @@ export const Review = list({
     rating: integer(),
     product: relationship({ref: 'Product.reviews'})
   },
+  ui: {
+    listView: {
+      initialColumns: ["review", "rating", "customerId", "product"]
+    },
+  },
 })

@@ -42,6 +42,24 @@ export default function Home() {
           WishListItem: _allWishListItemsMeta {
             count
           }
+          Cart: _allCartsMeta {
+            count
+          }
+          CartItem: _allCartItemsMeta {
+            count
+          }
+          OrderItem: _allOrderItemsMeta {
+            count
+          }
+          Order: _allOrdersMeta {
+            count
+          }
+          Customer: _allCustomersMeta {
+            count
+          }
+          Storefront: _allStorefrontsMeta {
+            count
+          }
         }
       `}
     />

@@ -174,7 +174,7 @@ type Product {
   description: String
   reviews(where: ReviewWhereInput, search: String, sortBy: [SortReviewsBy!], orderBy: String, first: Int, skip: Int): [Review!]!
   _reviewsMeta(where: ReviewWhereInput, search: String, sortBy: [SortReviewsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
-  status: String
+  featured: Boolean
   category(where: ProductCategoryWhereInput, search: String, sortBy: [SortProductCategoriesBy!], orderBy: String, first: Int, skip: Int): [ProductCategory!]!
   _categoryMeta(where: ProductCategoryWhereInput, search: String, sortBy: [SortProductCategoriesBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
   price: Int
@@ -233,24 +233,8 @@ input ProductWhereInput {
 
   """ condition must be false for all nodes """
   reviews_none: ReviewWhereInput
-  status: String
-  status_not: String
-  status_contains: String
-  status_not_contains: String
-  status_starts_with: String
-  status_not_starts_with: String
-  status_ends_with: String
-  status_not_ends_with: String
-  status_i: String
-  status_not_i: String
-  status_contains_i: String
-  status_not_contains_i: String
-  status_starts_with_i: String
-  status_not_starts_with_i: String
-  status_ends_with_i: String
-  status_not_ends_with_i: String
-  status_in: [String]
-  status_not_in: [String]
+  featured: Boolean
+  featured_not: Boolean
 
   """ condition must be true for all nodes """
   category_every: ProductCategoryWhereInput
@@ -285,8 +269,8 @@ enum SortProductsBy {
   description_DESC
   reviews_ASC
   reviews_DESC
-  status_ASC
-  status_DESC
+  featured_ASC
+  featured_DESC
   category_ASC
   category_DESC
   price_ASC
@@ -299,7 +283,7 @@ input ProductUpdateInput {
   name: String
   description: String
   reviews: ReviewRelateToManyInput
-  status: String
+  featured: Boolean
   category: ProductCategoryRelateToManyInput
   price: Int
   photo: ProductImageRelateToOneInput
@@ -314,7 +298,7 @@ input ProductCreateInput {
   name: String
   description: String
   reviews: ReviewRelateToManyInput
-  status: String
+  featured: Boolean
   category: ProductCategoryRelateToManyInput
   price: Int
   photo: ProductImageRelateToOneInput
@@ -823,6 +807,645 @@ input WishListItemsCreateInput {
   data: WishListItemCreateInput
 }
 
+input CartItemRelateToManyInput {
+  create: [CartItemCreateInput]
+  connect: [CartItemWhereUniqueInput]
+  disconnect: [CartItemWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type Cart {
+  id: ID!
+  customerId: String
+  cartItems(where: CartItemWhereInput, search: String, sortBy: [SortCartItemsBy!], orderBy: String, first: Int, skip: Int): [CartItem!]!
+  _cartItemsMeta(where: CartItemWhereInput, search: String, sortBy: [SortCartItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+}
+
+input CartWhereInput {
+  AND: [CartWhereInput]
+  OR: [CartWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  customerId: String
+  customerId_not: String
+  customerId_contains: String
+  customerId_not_contains: String
+  customerId_starts_with: String
+  customerId_not_starts_with: String
+  customerId_ends_with: String
+  customerId_not_ends_with: String
+  customerId_i: String
+  customerId_not_i: String
+  customerId_contains_i: String
+  customerId_not_contains_i: String
+  customerId_starts_with_i: String
+  customerId_not_starts_with_i: String
+  customerId_ends_with_i: String
+  customerId_not_ends_with_i: String
+  customerId_in: [String]
+  customerId_not_in: [String]
+
+  """ condition must be true for all nodes """
+  cartItems_every: CartItemWhereInput
+
+  """ condition must be true for at least 1 node """
+  cartItems_some: CartItemWhereInput
+
+  """ condition must be false for all nodes """
+  cartItems_none: CartItemWhereInput
+}
+
+input CartWhereUniqueInput {
+  id: ID!
+}
+
+enum SortCartsBy {
+  id_ASC
+  id_DESC
+  customerId_ASC
+  customerId_DESC
+  cartItems_ASC
+  cartItems_DESC
+}
+
+input CartUpdateInput {
+  customerId: String
+  cartItems: CartItemRelateToManyInput
+}
+
+input CartsUpdateInput {
+  id: ID!
+  data: CartUpdateInput
+}
+
+input CartCreateInput {
+  customerId: String
+  cartItems: CartItemRelateToManyInput
+}
+
+input CartsCreateInput {
+  data: CartCreateInput
+}
+
+input CartRelateToOneInput {
+  create: CartCreateInput
+  connect: CartWhereUniqueInput
+  disconnect: CartWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type CartItem {
+  id: ID!
+  quantity: Int
+  productId: String
+  cart: Cart
+  cartId: String
+}
+
+input CartItemWhereInput {
+  AND: [CartItemWhereInput]
+  OR: [CartItemWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  quantity: Int
+  quantity_not: Int
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  quantity_in: [Int]
+  quantity_not_in: [Int]
+  productId: String
+  productId_not: String
+  productId_contains: String
+  productId_not_contains: String
+  productId_starts_with: String
+  productId_not_starts_with: String
+  productId_ends_with: String
+  productId_not_ends_with: String
+  productId_i: String
+  productId_not_i: String
+  productId_contains_i: String
+  productId_not_contains_i: String
+  productId_starts_with_i: String
+  productId_not_starts_with_i: String
+  productId_ends_with_i: String
+  productId_not_ends_with_i: String
+  productId_in: [String]
+  productId_not_in: [String]
+  cart: CartWhereInput
+  cart_is_null: Boolean
+  cartId: String
+  cartId_not: String
+  cartId_contains: String
+  cartId_not_contains: String
+  cartId_starts_with: String
+  cartId_not_starts_with: String
+  cartId_ends_with: String
+  cartId_not_ends_with: String
+  cartId_i: String
+  cartId_not_i: String
+  cartId_contains_i: String
+  cartId_not_contains_i: String
+  cartId_starts_with_i: String
+  cartId_not_starts_with_i: String
+  cartId_ends_with_i: String
+  cartId_not_ends_with_i: String
+  cartId_in: [String]
+  cartId_not_in: [String]
+}
+
+input CartItemWhereUniqueInput {
+  id: ID!
+}
+
+enum SortCartItemsBy {
+  id_ASC
+  id_DESC
+  quantity_ASC
+  quantity_DESC
+  productId_ASC
+  productId_DESC
+  cart_ASC
+  cart_DESC
+  cartId_ASC
+  cartId_DESC
+}
+
+input CartItemUpdateInput {
+  quantity: Int
+  productId: String
+  cart: CartRelateToOneInput
+  cartId: String
+}
+
+input CartItemsUpdateInput {
+  id: ID!
+  data: CartItemUpdateInput
+}
+
+input CartItemCreateInput {
+  quantity: Int
+  productId: String
+  cart: CartRelateToOneInput
+  cartId: String
+}
+
+input CartItemsCreateInput {
+  data: CartItemCreateInput
+}
+
+input OrderRelateToOneInput {
+  create: OrderCreateInput
+  connect: OrderWhereUniqueInput
+  disconnect: OrderWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type OrderItem {
+  id: ID!
+  quantity: Int
+  productId: String
+  price: Int
+  order: Order
+}
+
+input OrderItemWhereInput {
+  AND: [OrderItemWhereInput]
+  OR: [OrderItemWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  quantity: Int
+  quantity_not: Int
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  quantity_in: [Int]
+  quantity_not_in: [Int]
+  productId: String
+  productId_not: String
+  productId_contains: String
+  productId_not_contains: String
+  productId_starts_with: String
+  productId_not_starts_with: String
+  productId_ends_with: String
+  productId_not_ends_with: String
+  productId_i: String
+  productId_not_i: String
+  productId_contains_i: String
+  productId_not_contains_i: String
+  productId_starts_with_i: String
+  productId_not_starts_with_i: String
+  productId_ends_with_i: String
+  productId_not_ends_with_i: String
+  productId_in: [String]
+  productId_not_in: [String]
+  price: Int
+  price_not: Int
+  price_lt: Int
+  price_lte: Int
+  price_gt: Int
+  price_gte: Int
+  price_in: [Int]
+  price_not_in: [Int]
+  order: OrderWhereInput
+  order_is_null: Boolean
+}
+
+input OrderItemWhereUniqueInput {
+  id: ID!
+}
+
+enum SortOrderItemsBy {
+  id_ASC
+  id_DESC
+  quantity_ASC
+  quantity_DESC
+  productId_ASC
+  productId_DESC
+  price_ASC
+  price_DESC
+  order_ASC
+  order_DESC
+}
+
+input OrderItemUpdateInput {
+  quantity: Int
+  productId: String
+  price: Int
+  order: OrderRelateToOneInput
+}
+
+input OrderItemsUpdateInput {
+  id: ID!
+  data: OrderItemUpdateInput
+}
+
+input OrderItemCreateInput {
+  quantity: Int
+  productId: String
+  price: Int
+  order: OrderRelateToOneInput
+}
+
+input OrderItemsCreateInput {
+  data: OrderItemCreateInput
+}
+
+input OrderItemRelateToManyInput {
+  create: [OrderItemCreateInput]
+  connect: [OrderItemWhereUniqueInput]
+  disconnect: [OrderItemWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+""" A keystone list """
+type Order {
+  id: ID!
+  total: Int
+  items(where: OrderItemWhereInput, search: String, sortBy: [SortOrderItemsBy!], orderBy: String, first: Int, skip: Int): [OrderItem!]!
+  _itemsMeta(where: OrderItemWhereInput, search: String, sortBy: [SortOrderItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+  customerId: String
+  charge: String
+}
+
+input OrderWhereInput {
+  AND: [OrderWhereInput]
+  OR: [OrderWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  total: Int
+  total_not: Int
+  total_lt: Int
+  total_lte: Int
+  total_gt: Int
+  total_gte: Int
+  total_in: [Int]
+  total_not_in: [Int]
+
+  """ condition must be true for all nodes """
+  items_every: OrderItemWhereInput
+
+  """ condition must be true for at least 1 node """
+  items_some: OrderItemWhereInput
+
+  """ condition must be false for all nodes """
+  items_none: OrderItemWhereInput
+  customerId: String
+  customerId_not: String
+  customerId_contains: String
+  customerId_not_contains: String
+  customerId_starts_with: String
+  customerId_not_starts_with: String
+  customerId_ends_with: String
+  customerId_not_ends_with: String
+  customerId_i: String
+  customerId_not_i: String
+  customerId_contains_i: String
+  customerId_not_contains_i: String
+  customerId_starts_with_i: String
+  customerId_not_starts_with_i: String
+  customerId_ends_with_i: String
+  customerId_not_ends_with_i: String
+  customerId_in: [String]
+  customerId_not_in: [String]
+  charge: String
+  charge_not: String
+  charge_contains: String
+  charge_not_contains: String
+  charge_starts_with: String
+  charge_not_starts_with: String
+  charge_ends_with: String
+  charge_not_ends_with: String
+  charge_i: String
+  charge_not_i: String
+  charge_contains_i: String
+  charge_not_contains_i: String
+  charge_starts_with_i: String
+  charge_not_starts_with_i: String
+  charge_ends_with_i: String
+  charge_not_ends_with_i: String
+  charge_in: [String]
+  charge_not_in: [String]
+}
+
+input OrderWhereUniqueInput {
+  id: ID!
+}
+
+enum SortOrdersBy {
+  id_ASC
+  id_DESC
+  total_ASC
+  total_DESC
+  items_ASC
+  items_DESC
+  customerId_ASC
+  customerId_DESC
+  charge_ASC
+  charge_DESC
+}
+
+input OrderUpdateInput {
+  total: Int
+  items: OrderItemRelateToManyInput
+  customerId: String
+  charge: String
+}
+
+input OrdersUpdateInput {
+  id: ID!
+  data: OrderUpdateInput
+}
+
+input OrderCreateInput {
+  total: Int
+  items: OrderItemRelateToManyInput
+  customerId: String
+  charge: String
+}
+
+input OrdersCreateInput {
+  data: OrderCreateInput
+}
+
+""" A keystone list """
+type Customer {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: String
+  password_is_set: Boolean
+  address: String
+}
+
+input CustomerWhereInput {
+  AND: [CustomerWhereInput]
+  OR: [CustomerWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  firstName: String
+  firstName_not: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  firstName_i: String
+  firstName_not_i: String
+  firstName_contains_i: String
+  firstName_not_contains_i: String
+  firstName_starts_with_i: String
+  firstName_not_starts_with_i: String
+  firstName_ends_with_i: String
+  firstName_not_ends_with_i: String
+  firstName_in: [String]
+  firstName_not_in: [String]
+  lastName: String
+  lastName_not: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  lastName_i: String
+  lastName_not_i: String
+  lastName_contains_i: String
+  lastName_not_contains_i: String
+  lastName_starts_with_i: String
+  lastName_not_starts_with_i: String
+  lastName_ends_with_i: String
+  lastName_not_ends_with_i: String
+  lastName_in: [String]
+  lastName_not_in: [String]
+  email: String
+  email_not: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  email_i: String
+  email_not_i: String
+  email_contains_i: String
+  email_not_contains_i: String
+  email_starts_with_i: String
+  email_not_starts_with_i: String
+  email_ends_with_i: String
+  email_not_ends_with_i: String
+  email_in: [String]
+  email_not_in: [String]
+  password_is_set: Boolean
+  address: String
+  address_not: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  address_i: String
+  address_not_i: String
+  address_contains_i: String
+  address_not_contains_i: String
+  address_starts_with_i: String
+  address_not_starts_with_i: String
+  address_ends_with_i: String
+  address_not_ends_with_i: String
+  address_in: [String]
+  address_not_in: [String]
+}
+
+input CustomerWhereUniqueInput {
+  id: ID!
+}
+
+enum SortCustomersBy {
+  id_ASC
+  id_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  email_ASC
+  email_DESC
+  address_ASC
+  address_DESC
+}
+
+input CustomerUpdateInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  address: String
+}
+
+input CustomersUpdateInput {
+  id: ID!
+  data: CustomerUpdateInput
+}
+
+input CustomerCreateInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  address: String
+}
+
+input CustomersCreateInput {
+  data: CustomerCreateInput
+}
+
+""" A keystone list """
+type Storefront {
+  id: ID!
+  storeName: String
+  mainBanner: CloudinaryImage_File
+  altText: String
+}
+
+input StorefrontWhereInput {
+  AND: [StorefrontWhereInput]
+  OR: [StorefrontWhereInput]
+  id: ID
+  id_not: ID
+  id_in: [ID]
+  id_not_in: [ID]
+  storeName: String
+  storeName_not: String
+  storeName_contains: String
+  storeName_not_contains: String
+  storeName_starts_with: String
+  storeName_not_starts_with: String
+  storeName_ends_with: String
+  storeName_not_ends_with: String
+  storeName_i: String
+  storeName_not_i: String
+  storeName_contains_i: String
+  storeName_not_contains_i: String
+  storeName_starts_with_i: String
+  storeName_not_starts_with_i: String
+  storeName_ends_with_i: String
+  storeName_not_ends_with_i: String
+  storeName_in: [String]
+  storeName_not_in: [String]
+  mainBanner: String
+  mainBanner_not: String
+  mainBanner_in: [String]
+  mainBanner_not_in: [String]
+  altText: String
+  altText_not: String
+  altText_contains: String
+  altText_not_contains: String
+  altText_starts_with: String
+  altText_not_starts_with: String
+  altText_ends_with: String
+  altText_not_ends_with: String
+  altText_i: String
+  altText_not_i: String
+  altText_contains_i: String
+  altText_not_contains_i: String
+  altText_starts_with_i: String
+  altText_not_starts_with_i: String
+  altText_ends_with_i: String
+  altText_not_ends_with_i: String
+  altText_in: [String]
+  altText_not_in: [String]
+}
+
+input StorefrontWhereUniqueInput {
+  id: ID!
+}
+
+enum SortStorefrontsBy {
+  id_ASC
+  id_DESC
+  storeName_ASC
+  storeName_DESC
+  altText_ASC
+  altText_DESC
+}
+
+input StorefrontUpdateInput {
+  storeName: String
+  mainBanner: Upload
+  altText: String
+}
+
+input StorefrontsUpdateInput {
+  id: ID!
+  data: StorefrontUpdateInput
+}
+
+input StorefrontCreateInput {
+  storeName: String
+  mainBanner: Upload
+  altText: String
+}
+
+input StorefrontsCreateInput {
+  data: StorefrontCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -1094,6 +1717,83 @@ type Query {
   """ Retrieve the meta-data for the WishListItem list. """
   _WishListItemsMeta: _ListMeta
 
+  """ Search for all Cart items which match the where clause. """
+  allCarts(where: CartWhereInput, search: String, sortBy: [SortCartsBy!], orderBy: String, first: Int, skip: Int): [Cart]
+
+  """ Search for the Cart item with the matching ID. """
+  Cart(where: CartWhereUniqueInput!): Cart
+
+  """ Perform a meta-query on all Cart items which match the where clause. """
+  _allCartsMeta(where: CartWhereInput, search: String, sortBy: [SortCartsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the Cart list. """
+  _CartsMeta: _ListMeta
+
+  """ Search for all CartItem items which match the where clause. """
+  allCartItems(where: CartItemWhereInput, search: String, sortBy: [SortCartItemsBy!], orderBy: String, first: Int, skip: Int): [CartItem]
+
+  """ Search for the CartItem item with the matching ID. """
+  CartItem(where: CartItemWhereUniqueInput!): CartItem
+
+  """ Perform a meta-query on all CartItem items which match the where clause. 
+  """
+  _allCartItemsMeta(where: CartItemWhereInput, search: String, sortBy: [SortCartItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the CartItem list. """
+  _CartItemsMeta: _ListMeta
+
+  """ Search for all OrderItem items which match the where clause. """
+  allOrderItems(where: OrderItemWhereInput, search: String, sortBy: [SortOrderItemsBy!], orderBy: String, first: Int, skip: Int): [OrderItem]
+
+  """ Search for the OrderItem item with the matching ID. """
+  OrderItem(where: OrderItemWhereUniqueInput!): OrderItem
+
+  """ Perform a meta-query on all OrderItem items which match the where clause. 
+  """
+  _allOrderItemsMeta(where: OrderItemWhereInput, search: String, sortBy: [SortOrderItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the OrderItem list. """
+  _OrderItemsMeta: _ListMeta
+
+  """ Search for all Order items which match the where clause. """
+  allOrders(where: OrderWhereInput, search: String, sortBy: [SortOrdersBy!], orderBy: String, first: Int, skip: Int): [Order]
+
+  """ Search for the Order item with the matching ID. """
+  Order(where: OrderWhereUniqueInput!): Order
+
+  """ Perform a meta-query on all Order items which match the where clause. 
+  """
+  _allOrdersMeta(where: OrderWhereInput, search: String, sortBy: [SortOrdersBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the Order list. """
+  _OrdersMeta: _ListMeta
+
+  """ Search for all Customer items which match the where clause. """
+  allCustomers(where: CustomerWhereInput, search: String, sortBy: [SortCustomersBy!], orderBy: String, first: Int, skip: Int): [Customer]
+
+  """ Search for the Customer item with the matching ID. """
+  Customer(where: CustomerWhereUniqueInput!): Customer
+
+  """ Perform a meta-query on all Customer items which match the where clause. 
+  """
+  _allCustomersMeta(where: CustomerWhereInput, search: String, sortBy: [SortCustomersBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the Customer list. """
+  _CustomersMeta: _ListMeta
+
+  """ Search for all Storefront items which match the where clause. """
+  allStorefronts(where: StorefrontWhereInput, search: String, sortBy: [SortStorefrontsBy!], orderBy: String, first: Int, skip: Int): [Storefront]
+
+  """ Search for the Storefront item with the matching ID. """
+  Storefront(where: StorefrontWhereUniqueInput!): Storefront
+
+  """ Perform a meta-query on all Storefront items which match the where clause. 
+  """
+  _allStorefrontsMeta(where: StorefrontWhereInput, search: String, sortBy: [SortStorefrontsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
+
+  """ Retrieve the meta-data for the Storefront list. """
+  _StorefrontsMeta: _ListMeta
+
   """ Retrieve the meta-data for all lists. """
   _ksListsMeta(where: _ksListsMetaInput): [_ListMeta]
 
@@ -1229,6 +1929,114 @@ type Mutation {
 
   """ Delete multiple WishListItem items by ID. """
   deleteWishListItems(ids: [ID!]): [WishListItem]
+
+  """ Create a single Cart item. """
+  createCart(data: CartCreateInput): Cart
+
+  """ Create multiple Cart items. """
+  createCarts(data: [CartsCreateInput]): [Cart]
+
+  """ Update a single Cart item by ID. """
+  updateCart(id: ID!, data: CartUpdateInput): Cart
+
+  """ Update multiple Cart items by ID. """
+  updateCarts(data: [CartsUpdateInput]): [Cart]
+
+  """ Delete a single Cart item by ID. """
+  deleteCart(id: ID!): Cart
+
+  """ Delete multiple Cart items by ID. """
+  deleteCarts(ids: [ID!]): [Cart]
+
+  """ Create a single CartItem item. """
+  createCartItem(data: CartItemCreateInput): CartItem
+
+  """ Create multiple CartItem items. """
+  createCartItems(data: [CartItemsCreateInput]): [CartItem]
+
+  """ Update a single CartItem item by ID. """
+  updateCartItem(id: ID!, data: CartItemUpdateInput): CartItem
+
+  """ Update multiple CartItem items by ID. """
+  updateCartItems(data: [CartItemsUpdateInput]): [CartItem]
+
+  """ Delete a single CartItem item by ID. """
+  deleteCartItem(id: ID!): CartItem
+
+  """ Delete multiple CartItem items by ID. """
+  deleteCartItems(ids: [ID!]): [CartItem]
+
+  """ Create a single OrderItem item. """
+  createOrderItem(data: OrderItemCreateInput): OrderItem
+
+  """ Create multiple OrderItem items. """
+  createOrderItems(data: [OrderItemsCreateInput]): [OrderItem]
+
+  """ Update a single OrderItem item by ID. """
+  updateOrderItem(id: ID!, data: OrderItemUpdateInput): OrderItem
+
+  """ Update multiple OrderItem items by ID. """
+  updateOrderItems(data: [OrderItemsUpdateInput]): [OrderItem]
+
+  """ Delete a single OrderItem item by ID. """
+  deleteOrderItem(id: ID!): OrderItem
+
+  """ Delete multiple OrderItem items by ID. """
+  deleteOrderItems(ids: [ID!]): [OrderItem]
+
+  """ Create a single Order item. """
+  createOrder(data: OrderCreateInput): Order
+
+  """ Create multiple Order items. """
+  createOrders(data: [OrdersCreateInput]): [Order]
+
+  """ Update a single Order item by ID. """
+  updateOrder(id: ID!, data: OrderUpdateInput): Order
+
+  """ Update multiple Order items by ID. """
+  updateOrders(data: [OrdersUpdateInput]): [Order]
+
+  """ Delete a single Order item by ID. """
+  deleteOrder(id: ID!): Order
+
+  """ Delete multiple Order items by ID. """
+  deleteOrders(ids: [ID!]): [Order]
+
+  """ Create a single Customer item. """
+  createCustomer(data: CustomerCreateInput): Customer
+
+  """ Create multiple Customer items. """
+  createCustomers(data: [CustomersCreateInput]): [Customer]
+
+  """ Update a single Customer item by ID. """
+  updateCustomer(id: ID!, data: CustomerUpdateInput): Customer
+
+  """ Update multiple Customer items by ID. """
+  updateCustomers(data: [CustomersUpdateInput]): [Customer]
+
+  """ Delete a single Customer item by ID. """
+  deleteCustomer(id: ID!): Customer
+
+  """ Delete multiple Customer items by ID. """
+  deleteCustomers(ids: [ID!]): [Customer]
+
+  """ Create a single Storefront item. """
+  createStorefront(data: StorefrontCreateInput): Storefront
+
+  """ Create multiple Storefront items. """
+  createStorefronts(data: [StorefrontsCreateInput]): [Storefront]
+
+  """ Update a single Storefront item by ID. """
+  updateStorefront(id: ID!, data: StorefrontUpdateInput): Storefront
+
+  """ Update multiple Storefront items by ID. """
+  updateStorefronts(data: [StorefrontsUpdateInput]): [Storefront]
+
+  """ Delete a single Storefront item by ID. """
+  deleteStorefront(id: ID!): Storefront
+
+  """ Delete multiple Storefront items by ID. """
+  deleteStorefronts(ids: [ID!]): [Storefront]
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult!
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   endSession: Boolean!

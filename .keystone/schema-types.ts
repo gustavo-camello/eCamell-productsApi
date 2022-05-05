@@ -223,24 +223,8 @@ export type ProductWhereInput = {
   readonly reviews_every?: ReviewWhereInput | null;
   readonly reviews_some?: ReviewWhereInput | null;
   readonly reviews_none?: ReviewWhereInput | null;
-  readonly status?: Scalars['String'] | null;
-  readonly status_not?: Scalars['String'] | null;
-  readonly status_contains?: Scalars['String'] | null;
-  readonly status_not_contains?: Scalars['String'] | null;
-  readonly status_starts_with?: Scalars['String'] | null;
-  readonly status_not_starts_with?: Scalars['String'] | null;
-  readonly status_ends_with?: Scalars['String'] | null;
-  readonly status_not_ends_with?: Scalars['String'] | null;
-  readonly status_i?: Scalars['String'] | null;
-  readonly status_not_i?: Scalars['String'] | null;
-  readonly status_contains_i?: Scalars['String'] | null;
-  readonly status_not_contains_i?: Scalars['String'] | null;
-  readonly status_starts_with_i?: Scalars['String'] | null;
-  readonly status_not_starts_with_i?: Scalars['String'] | null;
-  readonly status_ends_with_i?: Scalars['String'] | null;
-  readonly status_not_ends_with_i?: Scalars['String'] | null;
-  readonly status_in?: ReadonlyArray<Scalars['String'] | null> | null;
-  readonly status_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly featured?: Scalars['Boolean'] | null;
+  readonly featured_not?: Scalars['Boolean'] | null;
   readonly category_every?: ProductCategoryWhereInput | null;
   readonly category_some?: ProductCategoryWhereInput | null;
   readonly category_none?: ProductCategoryWhereInput | null;
@@ -269,8 +253,8 @@ export type SortProductsBy =
   | 'description_DESC'
   | 'reviews_ASC'
   | 'reviews_DESC'
-  | 'status_ASC'
-  | 'status_DESC'
+  | 'featured_ASC'
+  | 'featured_DESC'
   | 'category_ASC'
   | 'category_DESC'
   | 'price_ASC'
@@ -282,7 +266,7 @@ export type ProductUpdateInput = {
   readonly name?: Scalars['String'] | null;
   readonly description?: Scalars['String'] | null;
   readonly reviews?: ReviewRelateToManyInput | null;
-  readonly status?: Scalars['String'] | null;
+  readonly featured?: Scalars['Boolean'] | null;
   readonly category?: ProductCategoryRelateToManyInput | null;
   readonly price?: Scalars['Int'] | null;
   readonly photo?: ProductImageRelateToOneInput | null;
@@ -297,7 +281,7 @@ export type ProductCreateInput = {
   readonly name?: Scalars['String'] | null;
   readonly description?: Scalars['String'] | null;
   readonly reviews?: ReviewRelateToManyInput | null;
-  readonly status?: Scalars['String'] | null;
+  readonly featured?: Scalars['Boolean'] | null;
   readonly category?: ProductCategoryRelateToManyInput | null;
   readonly price?: Scalars['Int'] | null;
   readonly photo?: ProductImageRelateToOneInput | null;
@@ -731,6 +715,573 @@ export type WishListItemsCreateInput = {
   readonly data?: WishListItemCreateInput | null;
 };
 
+export type CartItemRelateToManyInput = {
+  readonly create?: ReadonlyArray<CartItemCreateInput | null> | null;
+  readonly connect?: ReadonlyArray<CartItemWhereUniqueInput | null> | null;
+  readonly disconnect?: ReadonlyArray<CartItemWhereUniqueInput | null> | null;
+  readonly disconnectAll?: Scalars['Boolean'] | null;
+};
+
+export type CartWhereInput = {
+  readonly AND?: ReadonlyArray<CartWhereInput | null> | null;
+  readonly OR?: ReadonlyArray<CartWhereInput | null> | null;
+  readonly id?: Scalars['ID'] | null;
+  readonly id_not?: Scalars['ID'] | null;
+  readonly id_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly id_not_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly customerId?: Scalars['String'] | null;
+  readonly customerId_not?: Scalars['String'] | null;
+  readonly customerId_contains?: Scalars['String'] | null;
+  readonly customerId_not_contains?: Scalars['String'] | null;
+  readonly customerId_starts_with?: Scalars['String'] | null;
+  readonly customerId_not_starts_with?: Scalars['String'] | null;
+  readonly customerId_ends_with?: Scalars['String'] | null;
+  readonly customerId_not_ends_with?: Scalars['String'] | null;
+  readonly customerId_i?: Scalars['String'] | null;
+  readonly customerId_not_i?: Scalars['String'] | null;
+  readonly customerId_contains_i?: Scalars['String'] | null;
+  readonly customerId_not_contains_i?: Scalars['String'] | null;
+  readonly customerId_starts_with_i?: Scalars['String'] | null;
+  readonly customerId_not_starts_with_i?: Scalars['String'] | null;
+  readonly customerId_ends_with_i?: Scalars['String'] | null;
+  readonly customerId_not_ends_with_i?: Scalars['String'] | null;
+  readonly customerId_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly customerId_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly cartItems_every?: CartItemWhereInput | null;
+  readonly cartItems_some?: CartItemWhereInput | null;
+  readonly cartItems_none?: CartItemWhereInput | null;
+};
+
+export type CartWhereUniqueInput = {
+  readonly id: Scalars['ID'];
+};
+
+export type SortCartsBy =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'customerId_ASC'
+  | 'customerId_DESC'
+  | 'cartItems_ASC'
+  | 'cartItems_DESC';
+
+export type CartUpdateInput = {
+  readonly customerId?: Scalars['String'] | null;
+  readonly cartItems?: CartItemRelateToManyInput | null;
+};
+
+export type CartsUpdateInput = {
+  readonly id: Scalars['ID'];
+  readonly data?: CartUpdateInput | null;
+};
+
+export type CartCreateInput = {
+  readonly customerId?: Scalars['String'] | null;
+  readonly cartItems?: CartItemRelateToManyInput | null;
+};
+
+export type CartsCreateInput = {
+  readonly data?: CartCreateInput | null;
+};
+
+export type CartRelateToOneInput = {
+  readonly create?: CartCreateInput | null;
+  readonly connect?: CartWhereUniqueInput | null;
+  readonly disconnect?: CartWhereUniqueInput | null;
+  readonly disconnectAll?: Scalars['Boolean'] | null;
+};
+
+export type CartItemWhereInput = {
+  readonly AND?: ReadonlyArray<CartItemWhereInput | null> | null;
+  readonly OR?: ReadonlyArray<CartItemWhereInput | null> | null;
+  readonly id?: Scalars['ID'] | null;
+  readonly id_not?: Scalars['ID'] | null;
+  readonly id_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly id_not_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly quantity?: Scalars['Int'] | null;
+  readonly quantity_not?: Scalars['Int'] | null;
+  readonly quantity_lt?: Scalars['Int'] | null;
+  readonly quantity_lte?: Scalars['Int'] | null;
+  readonly quantity_gt?: Scalars['Int'] | null;
+  readonly quantity_gte?: Scalars['Int'] | null;
+  readonly quantity_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly quantity_not_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly productId?: Scalars['String'] | null;
+  readonly productId_not?: Scalars['String'] | null;
+  readonly productId_contains?: Scalars['String'] | null;
+  readonly productId_not_contains?: Scalars['String'] | null;
+  readonly productId_starts_with?: Scalars['String'] | null;
+  readonly productId_not_starts_with?: Scalars['String'] | null;
+  readonly productId_ends_with?: Scalars['String'] | null;
+  readonly productId_not_ends_with?: Scalars['String'] | null;
+  readonly productId_i?: Scalars['String'] | null;
+  readonly productId_not_i?: Scalars['String'] | null;
+  readonly productId_contains_i?: Scalars['String'] | null;
+  readonly productId_not_contains_i?: Scalars['String'] | null;
+  readonly productId_starts_with_i?: Scalars['String'] | null;
+  readonly productId_not_starts_with_i?: Scalars['String'] | null;
+  readonly productId_ends_with_i?: Scalars['String'] | null;
+  readonly productId_not_ends_with_i?: Scalars['String'] | null;
+  readonly productId_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly productId_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly cart?: CartWhereInput | null;
+  readonly cart_is_null?: Scalars['Boolean'] | null;
+  readonly cartId?: Scalars['String'] | null;
+  readonly cartId_not?: Scalars['String'] | null;
+  readonly cartId_contains?: Scalars['String'] | null;
+  readonly cartId_not_contains?: Scalars['String'] | null;
+  readonly cartId_starts_with?: Scalars['String'] | null;
+  readonly cartId_not_starts_with?: Scalars['String'] | null;
+  readonly cartId_ends_with?: Scalars['String'] | null;
+  readonly cartId_not_ends_with?: Scalars['String'] | null;
+  readonly cartId_i?: Scalars['String'] | null;
+  readonly cartId_not_i?: Scalars['String'] | null;
+  readonly cartId_contains_i?: Scalars['String'] | null;
+  readonly cartId_not_contains_i?: Scalars['String'] | null;
+  readonly cartId_starts_with_i?: Scalars['String'] | null;
+  readonly cartId_not_starts_with_i?: Scalars['String'] | null;
+  readonly cartId_ends_with_i?: Scalars['String'] | null;
+  readonly cartId_not_ends_with_i?: Scalars['String'] | null;
+  readonly cartId_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly cartId_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+};
+
+export type CartItemWhereUniqueInput = {
+  readonly id: Scalars['ID'];
+};
+
+export type SortCartItemsBy =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'quantity_ASC'
+  | 'quantity_DESC'
+  | 'productId_ASC'
+  | 'productId_DESC'
+  | 'cart_ASC'
+  | 'cart_DESC'
+  | 'cartId_ASC'
+  | 'cartId_DESC';
+
+export type CartItemUpdateInput = {
+  readonly quantity?: Scalars['Int'] | null;
+  readonly productId?: Scalars['String'] | null;
+  readonly cart?: CartRelateToOneInput | null;
+  readonly cartId?: Scalars['String'] | null;
+};
+
+export type CartItemsUpdateInput = {
+  readonly id: Scalars['ID'];
+  readonly data?: CartItemUpdateInput | null;
+};
+
+export type CartItemCreateInput = {
+  readonly quantity?: Scalars['Int'] | null;
+  readonly productId?: Scalars['String'] | null;
+  readonly cart?: CartRelateToOneInput | null;
+  readonly cartId?: Scalars['String'] | null;
+};
+
+export type CartItemsCreateInput = {
+  readonly data?: CartItemCreateInput | null;
+};
+
+export type OrderRelateToOneInput = {
+  readonly create?: OrderCreateInput | null;
+  readonly connect?: OrderWhereUniqueInput | null;
+  readonly disconnect?: OrderWhereUniqueInput | null;
+  readonly disconnectAll?: Scalars['Boolean'] | null;
+};
+
+export type OrderItemWhereInput = {
+  readonly AND?: ReadonlyArray<OrderItemWhereInput | null> | null;
+  readonly OR?: ReadonlyArray<OrderItemWhereInput | null> | null;
+  readonly id?: Scalars['ID'] | null;
+  readonly id_not?: Scalars['ID'] | null;
+  readonly id_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly id_not_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly quantity?: Scalars['Int'] | null;
+  readonly quantity_not?: Scalars['Int'] | null;
+  readonly quantity_lt?: Scalars['Int'] | null;
+  readonly quantity_lte?: Scalars['Int'] | null;
+  readonly quantity_gt?: Scalars['Int'] | null;
+  readonly quantity_gte?: Scalars['Int'] | null;
+  readonly quantity_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly quantity_not_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly productId?: Scalars['String'] | null;
+  readonly productId_not?: Scalars['String'] | null;
+  readonly productId_contains?: Scalars['String'] | null;
+  readonly productId_not_contains?: Scalars['String'] | null;
+  readonly productId_starts_with?: Scalars['String'] | null;
+  readonly productId_not_starts_with?: Scalars['String'] | null;
+  readonly productId_ends_with?: Scalars['String'] | null;
+  readonly productId_not_ends_with?: Scalars['String'] | null;
+  readonly productId_i?: Scalars['String'] | null;
+  readonly productId_not_i?: Scalars['String'] | null;
+  readonly productId_contains_i?: Scalars['String'] | null;
+  readonly productId_not_contains_i?: Scalars['String'] | null;
+  readonly productId_starts_with_i?: Scalars['String'] | null;
+  readonly productId_not_starts_with_i?: Scalars['String'] | null;
+  readonly productId_ends_with_i?: Scalars['String'] | null;
+  readonly productId_not_ends_with_i?: Scalars['String'] | null;
+  readonly productId_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly productId_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly price?: Scalars['Int'] | null;
+  readonly price_not?: Scalars['Int'] | null;
+  readonly price_lt?: Scalars['Int'] | null;
+  readonly price_lte?: Scalars['Int'] | null;
+  readonly price_gt?: Scalars['Int'] | null;
+  readonly price_gte?: Scalars['Int'] | null;
+  readonly price_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly price_not_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly order?: OrderWhereInput | null;
+  readonly order_is_null?: Scalars['Boolean'] | null;
+};
+
+export type OrderItemWhereUniqueInput = {
+  readonly id: Scalars['ID'];
+};
+
+export type SortOrderItemsBy =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'quantity_ASC'
+  | 'quantity_DESC'
+  | 'productId_ASC'
+  | 'productId_DESC'
+  | 'price_ASC'
+  | 'price_DESC'
+  | 'order_ASC'
+  | 'order_DESC';
+
+export type OrderItemUpdateInput = {
+  readonly quantity?: Scalars['Int'] | null;
+  readonly productId?: Scalars['String'] | null;
+  readonly price?: Scalars['Int'] | null;
+  readonly order?: OrderRelateToOneInput | null;
+};
+
+export type OrderItemsUpdateInput = {
+  readonly id: Scalars['ID'];
+  readonly data?: OrderItemUpdateInput | null;
+};
+
+export type OrderItemCreateInput = {
+  readonly quantity?: Scalars['Int'] | null;
+  readonly productId?: Scalars['String'] | null;
+  readonly price?: Scalars['Int'] | null;
+  readonly order?: OrderRelateToOneInput | null;
+};
+
+export type OrderItemsCreateInput = {
+  readonly data?: OrderItemCreateInput | null;
+};
+
+export type OrderItemRelateToManyInput = {
+  readonly create?: ReadonlyArray<OrderItemCreateInput | null> | null;
+  readonly connect?: ReadonlyArray<OrderItemWhereUniqueInput | null> | null;
+  readonly disconnect?: ReadonlyArray<OrderItemWhereUniqueInput | null> | null;
+  readonly disconnectAll?: Scalars['Boolean'] | null;
+};
+
+export type OrderWhereInput = {
+  readonly AND?: ReadonlyArray<OrderWhereInput | null> | null;
+  readonly OR?: ReadonlyArray<OrderWhereInput | null> | null;
+  readonly id?: Scalars['ID'] | null;
+  readonly id_not?: Scalars['ID'] | null;
+  readonly id_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly id_not_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly total?: Scalars['Int'] | null;
+  readonly total_not?: Scalars['Int'] | null;
+  readonly total_lt?: Scalars['Int'] | null;
+  readonly total_lte?: Scalars['Int'] | null;
+  readonly total_gt?: Scalars['Int'] | null;
+  readonly total_gte?: Scalars['Int'] | null;
+  readonly total_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly total_not_in?: ReadonlyArray<Scalars['Int'] | null> | null;
+  readonly items_every?: OrderItemWhereInput | null;
+  readonly items_some?: OrderItemWhereInput | null;
+  readonly items_none?: OrderItemWhereInput | null;
+  readonly customerId?: Scalars['String'] | null;
+  readonly customerId_not?: Scalars['String'] | null;
+  readonly customerId_contains?: Scalars['String'] | null;
+  readonly customerId_not_contains?: Scalars['String'] | null;
+  readonly customerId_starts_with?: Scalars['String'] | null;
+  readonly customerId_not_starts_with?: Scalars['String'] | null;
+  readonly customerId_ends_with?: Scalars['String'] | null;
+  readonly customerId_not_ends_with?: Scalars['String'] | null;
+  readonly customerId_i?: Scalars['String'] | null;
+  readonly customerId_not_i?: Scalars['String'] | null;
+  readonly customerId_contains_i?: Scalars['String'] | null;
+  readonly customerId_not_contains_i?: Scalars['String'] | null;
+  readonly customerId_starts_with_i?: Scalars['String'] | null;
+  readonly customerId_not_starts_with_i?: Scalars['String'] | null;
+  readonly customerId_ends_with_i?: Scalars['String'] | null;
+  readonly customerId_not_ends_with_i?: Scalars['String'] | null;
+  readonly customerId_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly customerId_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly charge?: Scalars['String'] | null;
+  readonly charge_not?: Scalars['String'] | null;
+  readonly charge_contains?: Scalars['String'] | null;
+  readonly charge_not_contains?: Scalars['String'] | null;
+  readonly charge_starts_with?: Scalars['String'] | null;
+  readonly charge_not_starts_with?: Scalars['String'] | null;
+  readonly charge_ends_with?: Scalars['String'] | null;
+  readonly charge_not_ends_with?: Scalars['String'] | null;
+  readonly charge_i?: Scalars['String'] | null;
+  readonly charge_not_i?: Scalars['String'] | null;
+  readonly charge_contains_i?: Scalars['String'] | null;
+  readonly charge_not_contains_i?: Scalars['String'] | null;
+  readonly charge_starts_with_i?: Scalars['String'] | null;
+  readonly charge_not_starts_with_i?: Scalars['String'] | null;
+  readonly charge_ends_with_i?: Scalars['String'] | null;
+  readonly charge_not_ends_with_i?: Scalars['String'] | null;
+  readonly charge_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly charge_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+};
+
+export type OrderWhereUniqueInput = {
+  readonly id: Scalars['ID'];
+};
+
+export type SortOrdersBy =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'total_ASC'
+  | 'total_DESC'
+  | 'items_ASC'
+  | 'items_DESC'
+  | 'customerId_ASC'
+  | 'customerId_DESC'
+  | 'charge_ASC'
+  | 'charge_DESC';
+
+export type OrderUpdateInput = {
+  readonly total?: Scalars['Int'] | null;
+  readonly items?: OrderItemRelateToManyInput | null;
+  readonly customerId?: Scalars['String'] | null;
+  readonly charge?: Scalars['String'] | null;
+};
+
+export type OrdersUpdateInput = {
+  readonly id: Scalars['ID'];
+  readonly data?: OrderUpdateInput | null;
+};
+
+export type OrderCreateInput = {
+  readonly total?: Scalars['Int'] | null;
+  readonly items?: OrderItemRelateToManyInput | null;
+  readonly customerId?: Scalars['String'] | null;
+  readonly charge?: Scalars['String'] | null;
+};
+
+export type OrdersCreateInput = {
+  readonly data?: OrderCreateInput | null;
+};
+
+export type CustomerWhereInput = {
+  readonly AND?: ReadonlyArray<CustomerWhereInput | null> | null;
+  readonly OR?: ReadonlyArray<CustomerWhereInput | null> | null;
+  readonly id?: Scalars['ID'] | null;
+  readonly id_not?: Scalars['ID'] | null;
+  readonly id_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly id_not_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly firstName?: Scalars['String'] | null;
+  readonly firstName_not?: Scalars['String'] | null;
+  readonly firstName_contains?: Scalars['String'] | null;
+  readonly firstName_not_contains?: Scalars['String'] | null;
+  readonly firstName_starts_with?: Scalars['String'] | null;
+  readonly firstName_not_starts_with?: Scalars['String'] | null;
+  readonly firstName_ends_with?: Scalars['String'] | null;
+  readonly firstName_not_ends_with?: Scalars['String'] | null;
+  readonly firstName_i?: Scalars['String'] | null;
+  readonly firstName_not_i?: Scalars['String'] | null;
+  readonly firstName_contains_i?: Scalars['String'] | null;
+  readonly firstName_not_contains_i?: Scalars['String'] | null;
+  readonly firstName_starts_with_i?: Scalars['String'] | null;
+  readonly firstName_not_starts_with_i?: Scalars['String'] | null;
+  readonly firstName_ends_with_i?: Scalars['String'] | null;
+  readonly firstName_not_ends_with_i?: Scalars['String'] | null;
+  readonly firstName_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly firstName_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly lastName?: Scalars['String'] | null;
+  readonly lastName_not?: Scalars['String'] | null;
+  readonly lastName_contains?: Scalars['String'] | null;
+  readonly lastName_not_contains?: Scalars['String'] | null;
+  readonly lastName_starts_with?: Scalars['String'] | null;
+  readonly lastName_not_starts_with?: Scalars['String'] | null;
+  readonly lastName_ends_with?: Scalars['String'] | null;
+  readonly lastName_not_ends_with?: Scalars['String'] | null;
+  readonly lastName_i?: Scalars['String'] | null;
+  readonly lastName_not_i?: Scalars['String'] | null;
+  readonly lastName_contains_i?: Scalars['String'] | null;
+  readonly lastName_not_contains_i?: Scalars['String'] | null;
+  readonly lastName_starts_with_i?: Scalars['String'] | null;
+  readonly lastName_not_starts_with_i?: Scalars['String'] | null;
+  readonly lastName_ends_with_i?: Scalars['String'] | null;
+  readonly lastName_not_ends_with_i?: Scalars['String'] | null;
+  readonly lastName_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly lastName_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly email?: Scalars['String'] | null;
+  readonly email_not?: Scalars['String'] | null;
+  readonly email_contains?: Scalars['String'] | null;
+  readonly email_not_contains?: Scalars['String'] | null;
+  readonly email_starts_with?: Scalars['String'] | null;
+  readonly email_not_starts_with?: Scalars['String'] | null;
+  readonly email_ends_with?: Scalars['String'] | null;
+  readonly email_not_ends_with?: Scalars['String'] | null;
+  readonly email_i?: Scalars['String'] | null;
+  readonly email_not_i?: Scalars['String'] | null;
+  readonly email_contains_i?: Scalars['String'] | null;
+  readonly email_not_contains_i?: Scalars['String'] | null;
+  readonly email_starts_with_i?: Scalars['String'] | null;
+  readonly email_not_starts_with_i?: Scalars['String'] | null;
+  readonly email_ends_with_i?: Scalars['String'] | null;
+  readonly email_not_ends_with_i?: Scalars['String'] | null;
+  readonly email_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly email_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly password_is_set?: Scalars['Boolean'] | null;
+  readonly address?: Scalars['String'] | null;
+  readonly address_not?: Scalars['String'] | null;
+  readonly address_contains?: Scalars['String'] | null;
+  readonly address_not_contains?: Scalars['String'] | null;
+  readonly address_starts_with?: Scalars['String'] | null;
+  readonly address_not_starts_with?: Scalars['String'] | null;
+  readonly address_ends_with?: Scalars['String'] | null;
+  readonly address_not_ends_with?: Scalars['String'] | null;
+  readonly address_i?: Scalars['String'] | null;
+  readonly address_not_i?: Scalars['String'] | null;
+  readonly address_contains_i?: Scalars['String'] | null;
+  readonly address_not_contains_i?: Scalars['String'] | null;
+  readonly address_starts_with_i?: Scalars['String'] | null;
+  readonly address_not_starts_with_i?: Scalars['String'] | null;
+  readonly address_ends_with_i?: Scalars['String'] | null;
+  readonly address_not_ends_with_i?: Scalars['String'] | null;
+  readonly address_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly address_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+};
+
+export type CustomerWhereUniqueInput = {
+  readonly id: Scalars['ID'];
+};
+
+export type SortCustomersBy =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'firstName_ASC'
+  | 'firstName_DESC'
+  | 'lastName_ASC'
+  | 'lastName_DESC'
+  | 'email_ASC'
+  | 'email_DESC'
+  | 'address_ASC'
+  | 'address_DESC';
+
+export type CustomerUpdateInput = {
+  readonly firstName?: Scalars['String'] | null;
+  readonly lastName?: Scalars['String'] | null;
+  readonly email?: Scalars['String'] | null;
+  readonly password?: Scalars['String'] | null;
+  readonly address?: Scalars['String'] | null;
+};
+
+export type CustomersUpdateInput = {
+  readonly id: Scalars['ID'];
+  readonly data?: CustomerUpdateInput | null;
+};
+
+export type CustomerCreateInput = {
+  readonly firstName?: Scalars['String'] | null;
+  readonly lastName?: Scalars['String'] | null;
+  readonly email?: Scalars['String'] | null;
+  readonly password?: Scalars['String'] | null;
+  readonly address?: Scalars['String'] | null;
+};
+
+export type CustomersCreateInput = {
+  readonly data?: CustomerCreateInput | null;
+};
+
+export type StorefrontWhereInput = {
+  readonly AND?: ReadonlyArray<StorefrontWhereInput | null> | null;
+  readonly OR?: ReadonlyArray<StorefrontWhereInput | null> | null;
+  readonly id?: Scalars['ID'] | null;
+  readonly id_not?: Scalars['ID'] | null;
+  readonly id_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly id_not_in?: ReadonlyArray<Scalars['ID'] | null> | null;
+  readonly storeName?: Scalars['String'] | null;
+  readonly storeName_not?: Scalars['String'] | null;
+  readonly storeName_contains?: Scalars['String'] | null;
+  readonly storeName_not_contains?: Scalars['String'] | null;
+  readonly storeName_starts_with?: Scalars['String'] | null;
+  readonly storeName_not_starts_with?: Scalars['String'] | null;
+  readonly storeName_ends_with?: Scalars['String'] | null;
+  readonly storeName_not_ends_with?: Scalars['String'] | null;
+  readonly storeName_i?: Scalars['String'] | null;
+  readonly storeName_not_i?: Scalars['String'] | null;
+  readonly storeName_contains_i?: Scalars['String'] | null;
+  readonly storeName_not_contains_i?: Scalars['String'] | null;
+  readonly storeName_starts_with_i?: Scalars['String'] | null;
+  readonly storeName_not_starts_with_i?: Scalars['String'] | null;
+  readonly storeName_ends_with_i?: Scalars['String'] | null;
+  readonly storeName_not_ends_with_i?: Scalars['String'] | null;
+  readonly storeName_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly storeName_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly mainBanner?: Scalars['String'] | null;
+  readonly mainBanner_not?: Scalars['String'] | null;
+  readonly mainBanner_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly mainBanner_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly altText?: Scalars['String'] | null;
+  readonly altText_not?: Scalars['String'] | null;
+  readonly altText_contains?: Scalars['String'] | null;
+  readonly altText_not_contains?: Scalars['String'] | null;
+  readonly altText_starts_with?: Scalars['String'] | null;
+  readonly altText_not_starts_with?: Scalars['String'] | null;
+  readonly altText_ends_with?: Scalars['String'] | null;
+  readonly altText_not_ends_with?: Scalars['String'] | null;
+  readonly altText_i?: Scalars['String'] | null;
+  readonly altText_not_i?: Scalars['String'] | null;
+  readonly altText_contains_i?: Scalars['String'] | null;
+  readonly altText_not_contains_i?: Scalars['String'] | null;
+  readonly altText_starts_with_i?: Scalars['String'] | null;
+  readonly altText_not_starts_with_i?: Scalars['String'] | null;
+  readonly altText_ends_with_i?: Scalars['String'] | null;
+  readonly altText_not_ends_with_i?: Scalars['String'] | null;
+  readonly altText_in?: ReadonlyArray<Scalars['String'] | null> | null;
+  readonly altText_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
+};
+
+export type StorefrontWhereUniqueInput = {
+  readonly id: Scalars['ID'];
+};
+
+export type SortStorefrontsBy =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'storeName_ASC'
+  | 'storeName_DESC'
+  | 'altText_ASC'
+  | 'altText_DESC';
+
+export type StorefrontUpdateInput = {
+  readonly storeName?: Scalars['String'] | null;
+  readonly mainBanner?: any | null;
+  readonly altText?: Scalars['String'] | null;
+};
+
+export type StorefrontsUpdateInput = {
+  readonly id: Scalars['ID'];
+  readonly data?: StorefrontUpdateInput | null;
+};
+
+export type StorefrontCreateInput = {
+  readonly storeName?: Scalars['String'] | null;
+  readonly mainBanner?: any | null;
+  readonly altText?: Scalars['String'] | null;
+};
+
+export type StorefrontsCreateInput = {
+  readonly data?: StorefrontCreateInput | null;
+};
+
 export type _ksListsMetaInput = {
   readonly key?: Scalars['String'] | null;
   readonly auxiliary?: Scalars['Boolean'] | null;
@@ -821,7 +1372,7 @@ export type ProductListTypeInfo = {
     | 'name'
     | 'description'
     | 'reviews'
-    | 'status'
+    | 'featured'
     | 'category'
     | 'price'
     | 'photo';
@@ -830,7 +1381,7 @@ export type ProductListTypeInfo = {
     readonly name?: string | null;
     readonly description?: string | null;
     readonly reviews?: string | null;
-    readonly status?: string | null;
+    readonly featured?: boolean | null;
     readonly category?: string | null;
     readonly price?: number | null;
     readonly photo?: string | null;
@@ -1029,6 +1580,214 @@ export type WishListItemListFn = (
   WishListItemListTypeInfo['fields']
 >;
 
+export type CartListTypeInfo = {
+  key: 'Cart';
+  fields: 'id' | 'customerId' | 'cartItems';
+  backing: {
+    readonly id: string;
+    readonly customerId?: string | null;
+    readonly cartItems?: string | null;
+  };
+  inputs: {
+    where: CartWhereInput;
+    create: CartCreateInput;
+    update: CartUpdateInput;
+  };
+  args: {
+    listQuery: {
+      readonly where?: CartWhereInput | null;
+      readonly sortBy?: ReadonlyArray<SortCartsBy> | null;
+      readonly first?: Scalars['Int'] | null;
+      readonly skip?: Scalars['Int'] | null;
+    };
+  };
+};
+
+export type CartListFn = (
+  listConfig: import('@keystone-next/keystone/schema').ListConfig<
+    CartListTypeInfo,
+    CartListTypeInfo['fields']
+  >
+) => import('@keystone-next/keystone/schema').ListConfig<
+  CartListTypeInfo,
+  CartListTypeInfo['fields']
+>;
+
+export type CartItemListTypeInfo = {
+  key: 'CartItem';
+  fields: 'id' | 'quantity' | 'productId' | 'cart' | 'cartId';
+  backing: {
+    readonly id: string;
+    readonly quantity?: number | null;
+    readonly productId?: string | null;
+    readonly cart?: string | null;
+    readonly cartId?: string | null;
+  };
+  inputs: {
+    where: CartItemWhereInput;
+    create: CartItemCreateInput;
+    update: CartItemUpdateInput;
+  };
+  args: {
+    listQuery: {
+      readonly where?: CartItemWhereInput | null;
+      readonly sortBy?: ReadonlyArray<SortCartItemsBy> | null;
+      readonly first?: Scalars['Int'] | null;
+      readonly skip?: Scalars['Int'] | null;
+    };
+  };
+};
+
+export type CartItemListFn = (
+  listConfig: import('@keystone-next/keystone/schema').ListConfig<
+    CartItemListTypeInfo,
+    CartItemListTypeInfo['fields']
+  >
+) => import('@keystone-next/keystone/schema').ListConfig<
+  CartItemListTypeInfo,
+  CartItemListTypeInfo['fields']
+>;
+
+export type OrderItemListTypeInfo = {
+  key: 'OrderItem';
+  fields: 'id' | 'quantity' | 'productId' | 'price' | 'order';
+  backing: {
+    readonly id: string;
+    readonly quantity?: number | null;
+    readonly productId?: string | null;
+    readonly price?: number | null;
+    readonly order?: string | null;
+  };
+  inputs: {
+    where: OrderItemWhereInput;
+    create: OrderItemCreateInput;
+    update: OrderItemUpdateInput;
+  };
+  args: {
+    listQuery: {
+      readonly where?: OrderItemWhereInput | null;
+      readonly sortBy?: ReadonlyArray<SortOrderItemsBy> | null;
+      readonly first?: Scalars['Int'] | null;
+      readonly skip?: Scalars['Int'] | null;
+    };
+  };
+};
+
+export type OrderItemListFn = (
+  listConfig: import('@keystone-next/keystone/schema').ListConfig<
+    OrderItemListTypeInfo,
+    OrderItemListTypeInfo['fields']
+  >
+) => import('@keystone-next/keystone/schema').ListConfig<
+  OrderItemListTypeInfo,
+  OrderItemListTypeInfo['fields']
+>;
+
+export type OrderListTypeInfo = {
+  key: 'Order';
+  fields: 'id' | 'total' | 'items' | 'customerId' | 'charge';
+  backing: {
+    readonly id: string;
+    readonly total?: number | null;
+    readonly items?: string | null;
+    readonly customerId?: string | null;
+    readonly charge?: string | null;
+  };
+  inputs: {
+    where: OrderWhereInput;
+    create: OrderCreateInput;
+    update: OrderUpdateInput;
+  };
+  args: {
+    listQuery: {
+      readonly where?: OrderWhereInput | null;
+      readonly sortBy?: ReadonlyArray<SortOrdersBy> | null;
+      readonly first?: Scalars['Int'] | null;
+      readonly skip?: Scalars['Int'] | null;
+    };
+  };
+};
+
+export type OrderListFn = (
+  listConfig: import('@keystone-next/keystone/schema').ListConfig<
+    OrderListTypeInfo,
+    OrderListTypeInfo['fields']
+  >
+) => import('@keystone-next/keystone/schema').ListConfig<
+  OrderListTypeInfo,
+  OrderListTypeInfo['fields']
+>;
+
+export type CustomerListTypeInfo = {
+  key: 'Customer';
+  fields: 'id' | 'firstName' | 'lastName' | 'email' | 'password' | 'address';
+  backing: {
+    readonly id: string;
+    readonly firstName?: string | null;
+    readonly lastName?: string | null;
+    readonly email?: string | null;
+    readonly password?: string | null;
+    readonly address?: string | null;
+  };
+  inputs: {
+    where: CustomerWhereInput;
+    create: CustomerCreateInput;
+    update: CustomerUpdateInput;
+  };
+  args: {
+    listQuery: {
+      readonly where?: CustomerWhereInput | null;
+      readonly sortBy?: ReadonlyArray<SortCustomersBy> | null;
+      readonly first?: Scalars['Int'] | null;
+      readonly skip?: Scalars['Int'] | null;
+    };
+  };
+};
+
+export type CustomerListFn = (
+  listConfig: import('@keystone-next/keystone/schema').ListConfig<
+    CustomerListTypeInfo,
+    CustomerListTypeInfo['fields']
+  >
+) => import('@keystone-next/keystone/schema').ListConfig<
+  CustomerListTypeInfo,
+  CustomerListTypeInfo['fields']
+>;
+
+export type StorefrontListTypeInfo = {
+  key: 'Storefront';
+  fields: 'id' | 'storeName' | 'mainBanner' | 'altText';
+  backing: {
+    readonly id: string;
+    readonly storeName?: string | null;
+    readonly mainBanner?: any;
+    readonly altText?: string | null;
+  };
+  inputs: {
+    where: StorefrontWhereInput;
+    create: StorefrontCreateInput;
+    update: StorefrontUpdateInput;
+  };
+  args: {
+    listQuery: {
+      readonly where?: StorefrontWhereInput | null;
+      readonly sortBy?: ReadonlyArray<SortStorefrontsBy> | null;
+      readonly first?: Scalars['Int'] | null;
+      readonly skip?: Scalars['Int'] | null;
+    };
+  };
+};
+
+export type StorefrontListFn = (
+  listConfig: import('@keystone-next/keystone/schema').ListConfig<
+    StorefrontListTypeInfo,
+    StorefrontListTypeInfo['fields']
+  >
+) => import('@keystone-next/keystone/schema').ListConfig<
+  StorefrontListTypeInfo,
+  StorefrontListTypeInfo['fields']
+>;
+
 export type KeystoneListsTypeInfo = {
   readonly User: UserListTypeInfo;
   readonly Product: ProductListTypeInfo;
@@ -1037,4 +1796,10 @@ export type KeystoneListsTypeInfo = {
   readonly ProductCategory: ProductCategoryListTypeInfo;
   readonly WishList: WishListListTypeInfo;
   readonly WishListItem: WishListItemListTypeInfo;
+  readonly Cart: CartListTypeInfo;
+  readonly CartItem: CartItemListTypeInfo;
+  readonly OrderItem: OrderItemListTypeInfo;
+  readonly Order: OrderListTypeInfo;
+  readonly Customer: CustomerListTypeInfo;
+  readonly Storefront: StorefrontListTypeInfo;
 };
